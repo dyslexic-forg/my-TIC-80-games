@@ -76,11 +76,9 @@ function cresceCobra()
 end
 
 function colisaoComOCorpo()
-	for i,s1 in ipairs(segmentos) do
-		for j,s2 in ipairs(segmentos) do
-			if i ~= j and s1.linha == s2.linha and s1.coluna == s2.coluna then
-				return true
-			end
+	for i=2,#segmentos do
+		if segmentos[1].linha == segmentos[i].linha and segmentos[1].coluna == segmentos[i].coluna then
+			return true
 		end
 	end
 	return false
