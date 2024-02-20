@@ -1,6 +1,3 @@
-require "../snake"
-require "../food"
-
 local function snakeEatFood(snake, food)
     return snake.head.row == food.row and snake.head.col == food.col
 end

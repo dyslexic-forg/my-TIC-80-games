@@ -10,6 +10,8 @@ package.path = package.path..";/home/danilo/.local/share/com.nesbox.tic/TIC-80/m
 require "scenes/gamescene"
 require "scenes/titlescene"
 require "scenemanager"
+require "snake"
+require "food"
 
 -- constants
 SCREEN_WIDTH = 240
