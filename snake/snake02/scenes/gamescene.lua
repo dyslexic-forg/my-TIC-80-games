@@ -2,7 +2,7 @@ require "../snake"
 require "../food"
 
 local function snakeEatFood(snake, food)
-    return snake.row == food.row and snake.col == food.col
+    return snake.head.row == food.row and snake.head.col == food.col
 end
 
 GameScene = {}

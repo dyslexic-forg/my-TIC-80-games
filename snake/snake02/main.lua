@@ -8,6 +8,7 @@
 package.path = package.path..";/home/danilo/.local/share/com.nesbox.tic/TIC-80/my-games-tic-80/snake/snake02/?.lua"
 
 require "scenes/gamescene"
+require "scenes/titlescene"
 require "scenemanager"
 
 -- constants
@@ -17,15 +18,16 @@ SQUARE_SIZE = 8
 GRID_WIDTH = SCREEN_WIDTH // SQUARE_SIZE
 GRID_HEIGHT = SCREEN_HEIGHT // SQUARE_SIZE
 
-gSceneManager = SceneManager:new({
-	["play"] = function() return GameScene:new() end
+GlobalSceneManager = SceneManager:new({
+		["play"] = function() return GameScene:new() end,
+		["title"] = function() return TitleScene:new() end,
 })
 
-gSceneManager:change("play")
+GlobalSceneManager:change("title")
 
 function TIC()
-	gSceneManager:update(1/60)
-	gSceneManager:draw()
+	GlobalSceneManager:update(1/60)
+	GlobalSceneManager:draw()
 end
 
 -- <TILES>

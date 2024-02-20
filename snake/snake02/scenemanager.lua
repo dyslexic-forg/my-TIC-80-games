@@ -14,6 +14,7 @@ function SceneManager:new(scenes)
 end
 
 function SceneManager:change(sceneName)
+    assert(self.scenes[sceneName], sceneName.." scene dont exists")
     self.current = self.scenes[sceneName]()
 end
 
