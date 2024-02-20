@@ -63,3 +63,23 @@ end
 function Snake:setDirection(d)
   table.insert(self.nextDirections, d)
 end
+
+function Snake:grow()
+  table.insert(self.segments, 1, {
+    row = self.segments[1].row + offsets[self.direction].row,
+    col = self.segments[1].col + offsets[self.direction].col
+  })
+end
+
+function Snake:getSegmentDirection(idx)
+  if idx == 1 then return self.direction
+  else
+    local offset = {
+      row = self.segments[i-1].row - self.segments[i].row,
+      col = self.segments[i-1].col - self.segments[i].col
+    }
+    for d,o in pairs(offsets) do
+      if o.row == offset.row and o.col == offset.col then return d end
+    end
+  end
+end

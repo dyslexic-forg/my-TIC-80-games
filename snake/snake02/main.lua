@@ -6,7 +6,9 @@
 -- version: 0.1
 -- script:  lua
 package.path = package.path..";/home/danilo/.local/share/com.nesbox.tic/TIC-80/my-games-tic-80/snake/snake02/?.lua"
-require "snake"
+
+require "scenes/gamescene"
+require "scenemanager"
 
 -- constants
 SCREEN_WIDTH = 240
@@ -15,17 +17,15 @@ SQUARE_SIZE = 8
 GRID_WIDTH = SCREEN_WIDTH // SQUARE_SIZE
 GRID_HEIGHT = SCREEN_HEIGHT // SQUARE_SIZE
 
-local snake = Snake:new(GRID_HEIGHT//2, 3, "right")
+gSceneManager = SceneManager:new({
+	["play"] = function() return GameScene:new() end
+})
+
+gSceneManager:change("play")
 
 function TIC()
-	if btnp(0) then snake:setDirection("up") end
-	if btnp(1) then snake:setDirection("down") end
-	if btnp(2) then snake:setDirection("left") end
-	if btnp(3) then snake:setDirection("right") end
-
-	snake:update(1/60)
-	cls(13)
-	snake:draw()
+	gSceneManager:update(1/60)
+	gSceneManager:draw()
 end
 
 -- <TILES>
