@@ -9,6 +9,7 @@ function SceneManager:new(scenes)
     }
     sm.scenes = scenes or {}
     sm.current = sm.empty
+    sm.stack = {}
 
     return sm
 end

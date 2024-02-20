@@ -12,13 +12,14 @@ require "scenes/titlescene"
 require "scenemanager"
 require "snake"
 require "food"
+require "utils"
 
--- constants
 SCREEN_WIDTH = 240
 SCREEN_HEIGHT = 136
 SQUARE_SIZE = 8
 GRID_WIDTH = SCREEN_WIDTH // SQUARE_SIZE
 GRID_HEIGHT = SCREEN_HEIGHT // SQUARE_SIZE
+DEFAULT_FONT_WIDTH = 6
 
 GlobalSceneManager = SceneManager:new({
 		["play"] = function() return GameScene:new() end,

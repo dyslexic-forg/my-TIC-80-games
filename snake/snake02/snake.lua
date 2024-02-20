@@ -45,7 +45,7 @@ function Snake:draw()
       )
       if self:segmentInCurve(i) then
         rect(currentX, currentY, SQUARE_SIZE, SQUARE_SIZE, self.color)
-        print(self:segmentInCurve(i), currentX, currentY)
+        -- print(self:segmentInCurve(i), currentX, currentY)
       end
     end
   else
@@ -123,4 +123,17 @@ function Snake:segmentInCurve(idx)
     end
   end
   return false
+end
+
+function Snake:bodyCollision()
+  for i,s in ipairs(self.segments) do
+    if i ~= 1 and self.head.row == s.row and self.head.col == s.col then
+      return true
+    end
+  end
+  return false
+end
+
+function Snake:bordersCollision()
+  return self.head.row < 0 or self.head.row >= GRID_HEIGHT or self.head.col < 0 or self.head.col >= GRID_WIDTH
 end
