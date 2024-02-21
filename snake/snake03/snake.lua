@@ -10,6 +10,20 @@ local offsets = {
   down = {row = 1, col = 0}
 }
 
+local directionToRotation = {
+  right = 0,
+  down = 1,
+  left = 2,
+  up = 3
+}
+
+local directionToFlip = {
+  right = 0,
+  up = 0,
+  left = 2,
+  down = 1
+}
+
 local function interpolate(a, b, t)
   return a + (b - a) * t
 end
@@ -22,7 +36,7 @@ function Snake:new(row, col, direction, color)
   s.segments = {
     self.head,
     {row = row - offsets[direction].row, col = col - offsets[direction].col},
-    {row = row - 2*offsets[direction].row, col = col - 2*offsets[direction].col}
+    {row = row - 2*offsets[direction].row, col = col - 2*offsets[direction].col},
   }
   s.size = 3
   s.speed = SQUARE_SIZE
@@ -32,26 +46,33 @@ function Snake:new(row, col, direction, color)
 end
 
 function Snake:draw()
-  if SMOOTH_MOVEMENT then
-    for i, s in ipairs(self.segments) do
-      local currentX = s.col * SQUARE_SIZE
-      local currentY = s.row * SQUARE_SIZE
+  for i, s in ipairs(self.segments) do
+    local currentX = s.col * SQUARE_SIZE
+    local currentY = s.row * SQUARE_SIZE
+
+    local x, y
+    if SMOOTH_MOVEMENT then
       local nextX = (s.col + offsets[self:getSegmentDirection(i)].col) * SQUARE_SIZE
       local nextY = (s.row + offsets[self:getSegmentDirection(i)].row) * SQUARE_SIZE
-      rect(
-        interpolate(currentX, nextX, self.timer * self.speed),
-        interpolate(currentY, nextY, self.timer * self.speed),
-        SQUARE_SIZE, SQUARE_SIZE, self.color
-      )
-      if self:segmentInCurve(i) then
-        rect(currentX, currentY, SQUARE_SIZE, SQUARE_SIZE, self.color)
-        -- print(self:segmentInCurve(i), currentX, currentY)
-      end
+      x = interpolate(currentX, nextX, self.timer * self.speed)
+      y = interpolate(currentY, nextY, self.timer * self.speed)
+    else
+      x = currentX
+      y = currentY
     end
-  else
-    for _, s in ipairs(self.segments) do
-      rect(s.col * SQUARE_SIZE, s.row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE, self.color)
+    local d = self:getSegmentDirection(i)
+    spr(self:getSegmentSprite(i), x, y, 0, 1, directionToFlip[d], directionToRotation[d])
+
+    if i > 1 and i < #self.segments then
+      spr(self:getSegmentSprite(i), currentX, currentY, 0, 1, directionToFlip[d], directionToRotation[d])
     end
+  end
+end
+
+function Snake:getSegmentSprite(idx)
+  if idx == 1 then return 3
+  elseif idx == self.size then return 1
+  else return 2
   end
 end
 
@@ -135,5 +156,5 @@ function Snake:bodyCollision()
 end
 
 function Snake:bordersCollision()
-  return self.head.row < 0 or self.head.row >= GRID_HEIGHT or self.head.col < 0 or self.head.col >= GRID_WIDTH
+  return self.head.row < 2 or self.head.row > GRID_HEIGHT - 2 or self.head.col < 1 or self.head.col > GRID_WIDTH - 2
 end

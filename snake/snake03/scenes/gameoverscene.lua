@@ -5,7 +5,7 @@ function GameOverScene:new()
   local scene = setmetatable({}, GameOverScene)
   scene.title = "Gamer Over"
   scene.titleWidth = textWidth(scene.title, 2)
-  scene.instructions = "press [SPACE] to play"
+  scene.instructions = "press [ENTER] to play again"
   scene.instructionsWidth = textWidth(scene.instructions, 1)
   return scene
 end
@@ -16,7 +16,7 @@ function GameOverScene:draw()
 end
 
 function GameOverScene:update(dt)
-  if keyp(48) then
+  if keyp(50) then
     GlobalSceneManager:clear()
     GlobalSceneManager:push("play")
     GlobalSceneManager:push("count")

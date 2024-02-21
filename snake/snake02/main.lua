@@ -7,12 +7,12 @@
 -- script:  lua
 package.path = package.path..";/home/danilo/.local/share/com.nesbox.tic/TIC-80/my-games-tic-80/snake/snake02/?.lua"
 
+require "scenemanager"
 require "scenes/gamescene"
 require "scenes/titlescene"
 require "scenes/pausescene"
 require "scenes/countdownscene"
 require "scenes/gameoverscene"
-require "scenemanager"
 require "snake"
 require "food"
 require "utils"

@@ -1,24 +1,34 @@
 GameScene = {}
 GameScene.__index = GameScene
 
+NUMBER_OF_CHOICES = 5
+
 function GameScene:new()
     local scene = setmetatable({}, GameScene)
     scene.snake = Snake:new(GRID_HEIGHT // 2, 3, "right")
-    scene.numberOfChoices = 10
-    scene.question = newMultiplicationQuestion(scene.numberOfChoices)
-    scene.foods = scene:createFoods(scene.numberOfChoices, scene.question.choices)
+    scene.question = newMultiplicationQuestion(NUMBER_OF_CHOICES)
+    scene.foods = scene:createFoods()
     scene.score = 0
     return scene
 end
 
 function GameScene:draw()
-    cls(13)
+    map()
     for i, food in ipairs(self.foods) do
         food:draw()
     end
     self.snake:draw()
-    print("Score: "..self.score, 10, SQUARE_SIZE)
-    print(self.question.statement, SCREEN_WIDTH//2 - textWidth(self.question.statement)//2, SQUARE_SIZE)
+    print("Score: "..self.score, 10, SQUARE_SIZE//2)
+    print(self.question.statement, SCREEN_WIDTH//2 - textWidth(self.question.statement)//2, SQUARE_SIZE//2)
+    self:drawChoices()
+end
+
+function GameScene:drawChoices()
+    for i,choice in ipairs(self.question.choices) do
+        local x = self.foods[i].col * SQUARE_SIZE + SQUARE_SIZE// 2 - textWidth(choice, 1)//2 + 2
+        local y = (self.foods[i].row - 1) * SQUARE_SIZE + 1
+        print(choice, x, y, 15, true, 1, true)
+    end
 end
 
 function GameScene:update(dt)
@@ -31,13 +41,14 @@ function GameScene:update(dt)
 
     self.snake:update(dt)
 
-    for _, food in ipairs(self.foods) do
+    for i, food in ipairs(self.foods) do
         if self:snakeEatFood(food) then
-            if food.value == self.question.answer then
+            if self.question.choices[i] == self.question.answer then
                 self.score = self.score + 1
+                self.snake.speed = self.snake.speed + 0.2
                 self.snake:grow()
-                self.question = newMultiplicationQuestion(self.numberOfChoices)
-                self.foods = self:createFoods(self.numberOfChoices, self.question.choices)
+                self.question = newMultiplicationQuestion(NUMBER_OF_CHOICES)
+                self.foods = self:createFoods()
             else
                 GlobalSceneManager:push("gameover")
             end
@@ -60,13 +71,13 @@ function GameScene:foodUnderSnake(food)
     return false
 end
 
-function GameScene:createFoods(numberOfFoods, values)
+function GameScene:createFoods()
     local foods = {}
     local n = 1
-    while n <= numberOfFoods do
-        local food = Food:new(math.random(3, GRID_HEIGHT-1), math.random(0, GRID_WIDTH-1), values[n])
+    while n <= NUMBER_OF_CHOICES do
+        local food = Food:new(math.random(2, GRID_HEIGHT-2), math.random(1, GRID_WIDTH-2), self.question.choices[n])
         local collision = false
-        for i,f in ipairs(foods) do
+        for _,f in ipairs(foods) do
             if food.row == f.row and food.col == f.col then
                 collision = true
                 break
