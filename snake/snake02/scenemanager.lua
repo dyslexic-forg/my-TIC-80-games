@@ -15,12 +15,25 @@ function SceneManager:new(scenes)
 end
 
 function SceneManager:change(sceneName)
-    assert(self.scenes[sceneName], sceneName.." scene dont exists")
-    self.current = self.scenes[sceneName]()
+    self:pop()
+    self:push(sceneName)
+end
+
+function SceneManager:push(sceneName)
+	assert(self.scenes[sceneName], sceneName.." scene dont exists")
+    table.insert(self.stack, self.scenes[sceneName]())
+    self.current = self.stack[#self.stack]
+end
+
+function SceneManager:pop()
+    table.remove(self.stack)
+    self.current = self.stack[#self.stack]
 end
 
 function SceneManager:draw()
-    self.current:draw()
+    for _, scene in ipairs(self.stack) do
+        scene:draw()
+    end
 end
 
 function SceneManager:update(dt)

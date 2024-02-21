@@ -9,6 +9,9 @@ package.path = package.path..";/home/danilo/.local/share/com.nesbox.tic/TIC-80/m
 
 require "scenes/gamescene"
 require "scenes/titlescene"
+require "scenes/pausescene"
+require "scenes/countdownscene"
+require "scenes/gameoverscene"
 require "scenemanager"
 require "snake"
 require "food"
@@ -24,6 +27,9 @@ DEFAULT_FONT_WIDTH = 6
 GlobalSceneManager = SceneManager:new({
 		["play"] = function() return GameScene:new() end,
 		["title"] = function() return TitleScene:new() end,
+		["pause"] = function() return PauseScene:new() end,
+		["count"] = function() return CountDownScene:new() end,
+		["gameover"] = function() return GameOverScene:new() end,
 })
 
 GlobalSceneManager:change("title")

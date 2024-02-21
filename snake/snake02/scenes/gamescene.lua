@@ -22,6 +22,8 @@ function GameScene:update(dt)
     if btnp(2) then self.snake:setDirection("left") end
     if btnp(3) then self.snake:setDirection("right") end
 
+    if keyp(48) then GlobalSceneManager:push("pause") end
+
     self.snake:update(dt)
     if self:snakeEatFood() then
         self.snake:grow()
@@ -29,7 +31,7 @@ function GameScene:update(dt)
         self.score = self.score + 1
     end
     if self.snake:bodyCollision() or self.snake:bordersCollision() then
-        GlobalSceneManager:change("title")
+        GlobalSceneManager:change("gameover")
     end
 end
 
