@@ -83,7 +83,7 @@ function GameScene:createFoods()
                 break
             end
         end
-        if not (collision or self:foodUnderSnake(food)) then
+        if not (collision or self:foodUnderSnake(food) or distance(food.row, food.col, self.snake.head.row, self.snake.head.col) < 3) then
             table.insert(foods, food)
             n = n + 1
         end
