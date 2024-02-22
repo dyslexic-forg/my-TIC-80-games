@@ -46,31 +46,32 @@ function Snake:new(row, col, direction, color)
 end
 
 function Snake:draw()
-  for i, s in ipairs(self.segments) do
-    local currentX = s.col * SQUARE_SIZE
-    local currentY = s.row * SQUARE_SIZE
+  for i=2,self.size do
+    self:drawSegment(i)
+  end
+  for i,s in ipairs(self.segments) do
+    if self:segmentInCurve(i) then
+      rect(s.col * SQUARE_SIZE, s.row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE, self.color)
+    end
+  end
+  self:drawSegment(1)
+end
 
-    local x, y
-    if SMOOTH_MOVEMENT then
-      local nextX = (s.col + offsets[self:getSegmentDirection(i)].col) * SQUARE_SIZE
-      local nextY = (s.row + offsets[self:getSegmentDirection(i)].row) * SQUARE_SIZE
-      x = interpolate(currentX, nextX, self.timer * self.speed)
-      y = interpolate(currentY, nextY, self.timer * self.speed)
-    else
-      x = currentX
-      y = currentY
-    end
-    local d = self:getSegmentDirection(i)
-    spr(self:getSegmentSprite(i), x, y, 0, 1, directionToFlip[d], directionToRotation[d])
+function Snake:drawSegment(idx)
+  local currentX = self.segments[idx].col * SQUARE_SIZE
+  local currentY = self.segments[idx].row * SQUARE_SIZE
+  local d = self:getSegmentDirection(idx)
+  local x, y
+  if SMOOTH_MOVEMENT then
+    local nextX = currentX + offsets[d].col * SQUARE_SIZE
+    local nextY = currentY + offsets[d].row * SQUARE_SIZE
+    x = interpolate(currentX, nextX, self.timer * self.speed)
+    y = interpolate(currentY, nextY, self.timer * self.speed)
+  else
+    x = currentX
+    y = currentY
   end
-  for i, s in ipairs(self.segments) do
-    local result = self:segmentInCurve(i)
-    if result then
-      local currentX = s.col * SQUARE_SIZE
-      local currentY = s.row * SQUARE_SIZE
-      spr(6, currentX, currentY, 0, 1, 0, result)
-    end
-  end
+  spr(self:getSegmentSprite(idx), x, y, 0, 1, directionToFlip[d], directionToRotation[d])
 end
 
 function Snake:getSegmentSprite(idx)
