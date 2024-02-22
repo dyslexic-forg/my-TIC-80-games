@@ -62,9 +62,13 @@ function Snake:draw()
     end
     local d = self:getSegmentDirection(i)
     spr(self:getSegmentSprite(i), x, y, 0, 1, directionToFlip[d], directionToRotation[d])
-
-    if i > 1 and i < #self.segments then
-      spr(self:getSegmentSprite(i), currentX, currentY, 0, 1, directionToFlip[d], directionToRotation[d])
+  end
+  for i, s in ipairs(self.segments) do
+    local result = self:segmentInCurve(i)
+    if result then
+      local currentX = s.col * SQUARE_SIZE
+      local currentY = s.row * SQUARE_SIZE
+      spr(6, currentX, currentY, 0, 1, 0, result)
     end
   end
 end
@@ -134,7 +138,7 @@ function Snake:getSegmentDirection(idx)
 end
 
 function Snake:segmentInCurve(idx)
-  if idx > 1 and idx < self.size then
+  if idx < self.size then
     local direction = self:getSegmentDirection(idx)
     local previousDirection = self:getSegmentDirection(idx + 1)
     if (direction == "right" and previousDirection == "up") or (direction == "down" and previousDirection == "left") then return 0
