@@ -1,15 +1,12 @@
-GameScene = {}
-GameScene.__index = GameScene
+GameScene = BaseScene:extend()
 
 NUMBER_OF_CHOICES = 5
 
-function GameScene:new()
-    local scene = setmetatable({}, GameScene)
-    scene.snake = Snake:new(GRID_HEIGHT // 2, 3, "right")
-    scene.question = newMultiplicationQuestion(NUMBER_OF_CHOICES)
-    scene.foods = scene:createFoods()
-    scene.score = 0
-    return scene
+function GameScene:init()
+    self.snake = Snake(GRID_HEIGHT // 2, 3, "right")
+    self.question = newMultiplicationQuestion(NUMBER_OF_CHOICES)
+    self.foods = self:createFoods()
+    self.score = 0
 end
 
 function GameScene:draw()

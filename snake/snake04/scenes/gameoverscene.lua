@@ -1,13 +1,10 @@
-GameOverScene = {}
-GameOverScene.__index = GameOverScene
+GameOverScene = BaseScene:extend()
 
-function GameOverScene:new()
-  local scene = setmetatable({}, GameOverScene)
-  scene.title = "Gamer Over"
-  scene.titleWidth = textWidth(scene.title, 2)
-  scene.instructions = "press [ENTER] to play again"
-  scene.instructionsWidth = textWidth(scene.instructions, 1)
-  return scene
+function GameOverScene:init()
+  self.title = "Gamer Over"
+  self.titleWidth = textWidth(self.title, 2)
+  self.instructions = "press [ENTER] to play again"
+  self.instructionsWidth = textWidth(self.instructions, 1)
 end
 
 function GameOverScene:draw()

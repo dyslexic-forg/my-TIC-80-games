@@ -1,13 +1,10 @@
-TitleScene = {}
-TitleScene.__index = TitleScene
+TitleScene = BaseScene:extend()
 
-function TitleScene:new()
-  local scene = setmetatable({}, TitleScene)
-  scene.title = "Snake Game"
-  scene.titleWidth = textWidth(scene.title, 2)
-  scene.instructions = "press [ENTER] to play"
-  scene.instructionsWidth = textWidth(scene.instructions, 1)
-  return scene
+function TitleScene:init()
+  self.title = "Snake Game"
+  self.titleWidth = textWidth(self.title, 2)
+  self.instructions = "press [ENTER] to play"
+  self.instructionsWidth = textWidth(self.instructions, 1)
 end
 
 function TitleScene:draw()

@@ -1,8 +1,7 @@
-PauseScene = {}
-PauseScene.__index = PauseScene
+PauseScene = BaseScene:extend()
 
-function PauseScene:new()
-  return setmetatable({msg = "paused"}, PauseScene)
+function PauseScene:init()
+  self.msg = "paused"
 end
 
 function PauseScene:draw()

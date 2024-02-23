@@ -1,11 +1,8 @@
-CountDownScene = {}
-CountDownScene.__index = CountDownScene
+CountDownScene = BaseScene:extend()
 
-function CountDownScene:new()
-  local scene = setmetatable({}, CountDownScene)
-  scene.value = 3
-  scene.t = 0
-  return scene
+function CountDownScene:init()
+  self.value = 3
+  self.t = 0
 end
 
 function CountDownScene:draw()

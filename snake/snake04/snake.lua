@@ -1,5 +1,4 @@
-Snake = {}
-Snake.__index = Snake
+Snake = class()
 
 SMOOTH_MOVEMENT = true
 
@@ -28,21 +27,19 @@ local function interpolate(a, b, t)
   return a + (b - a) * t
 end
 
-function Snake:new(row, col, direction, color)
-  local s = setmetatable({}, Snake)
-  s.direction = direction
-  s.color = color or 6
+function Snake:init(row, col, direction, color)
+  self.direction = direction
+  self.color = color or 6
   self.head = {row = row, col = col}
-  s.segments = {
+  self.segments = {
     self.head,
     {row = row - offsets[direction].row, col = col - offsets[direction].col},
     {row = row - 2*offsets[direction].row, col = col - 2*offsets[direction].col},
   }
-  s.size = 3
-  s.speed = SQUARE_SIZE * 0.8
-  s.timer = 0
-  s.nextDirections = {}
-  return s
+  self.size = 3
+  self.speed = SQUARE_SIZE * 0.8
+  self.timer = 0
+  self.nextDirections = {}
 end
 
 function Snake:draw()
