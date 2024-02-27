@@ -14,7 +14,8 @@ function TitleScene:draw()
 end
 
 function TitleScene:update(dt)
-  if keyp(50) then
+  local x, y, left = mouse()
+  if keyp(50) or left then
     GlobalSceneManager:pop()
     GlobalSceneManager:push("play")
     GlobalSceneManager:push("count")

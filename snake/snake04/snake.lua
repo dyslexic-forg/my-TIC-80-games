@@ -110,7 +110,10 @@ function Snake:move()
 end
 
 function Snake:setDirection(d)
-  table.insert(self.nextDirections, d)
+  local n = #self.nextDirections
+  if n == 0 or (d ~= opositeDirection(self.nextDirections[n]) and d~= self.direction) then
+    table.insert(self.nextDirections, d)
+  end
 end
 
 function Snake:grow()

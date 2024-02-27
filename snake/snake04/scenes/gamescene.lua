@@ -1,6 +1,7 @@
 GameScene = BaseScene:extend()
 
 NUMBER_OF_CHOICES = 5
+Swipe = false
 
 function GameScene:init()
     self.snake = Snake(GRID_HEIGHT // 2, 3, "right")
@@ -28,7 +29,27 @@ function GameScene:drawChoices()
     end
 end
 
+function GameScene:getSwipeDirection(mx, my, startx, starty)
+	if mx > startx + 10 then return "right" end
+    if mx < startx - 10 then return "left" end
+    if my < starty - 10 then return "up" end
+    if my > starty + 10 then return "down" end
+end
+
 function GameScene:update(dt)
+    local mx, my, md = mouse()
+
+    if Swipe then
+        self.snake:setDirection(self:getSwipeDirection(mx, my, startx, starty))
+    end
+
+    if md then
+        startx, starty = mx, my
+        Swipe = true
+    else
+        Swipe = false
+    end
+
     if btnp(0) then self.snake:setDirection("up") end
     if btnp(1) then self.snake:setDirection("down") end
     if btnp(2) then self.snake:setDirection("left") end
